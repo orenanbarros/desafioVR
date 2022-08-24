@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.vr.miniautorizadorvr.entities.VrCard;
-import com.vr.miniautorizadorvr.entities.VrCardTransaction;
 import com.vr.miniautorizadorvr.exception.EntityNotFoundException;
 import com.vr.miniautorizadorvr.exception.EntityUnprocessableException;
 import com.vr.miniautorizadorvr.repositories.VrCardRepository;
@@ -52,7 +50,7 @@ public class VrCardServiceImpl implements VrCardService{
 		try {			
 			return Optional.of(repository.findByCardNumber(cardNumber)).orElseThrow(()-> new EntityNotFoundException());
 		}catch(Exception e) {
-			throw new EntityNotFoundException(inexistentCard + "-"+ cardNumber) ;
+			throw new EntityNotFoundException(inexistentCard + ":"+ cardNumber) ;
 		}
 	}
 	
@@ -66,35 +64,8 @@ public class VrCardServiceImpl implements VrCardService{
 		}catch(Exception e) {
 			throw new EntityNotFoundException(inexistentCard + cardNumber) ;
 		}
-		
 	}
 	
-	
-	private void checkCardPassword(VrCardTransaction vrCardTransaction) {
-		try {
-			Optional.of(
-					repository.findByCardNumberAndCardPassword(vrCardTransaction.getCardNumber(), vrCardTransaction.getCardPassword())).orElseThrow(()-> new EntityUnprocessableException(invalidPassword) );
-			 
-		}catch(Exception e) {
-			throw new EntityUnprocessableException(invalidPassword) ; 
-		}
-		
-	}
-	
-	private Float calculateCardBalance(VrCardTransaction vrCardTransaction) {
-		try {
-			
-			VrCard vrCard = Optional.of(
-					repository.findByCardNumberAndCardBalanceGreaterThanEqual(vrCardTransaction.getCardNumber(),vrCardTransaction.getValueTransaction())).orElseThrow(()-> new EntityUnprocessableException(insufficientBalance) );
-			 
-			 
-			 return (vrCard.getCardBalance()-vrCardTransaction.getValueTransaction());
-					 
-		}catch(Exception e) {
-			throw new EntityUnprocessableException(insufficientBalance) ;
-		}
-		
-	}
 	
 	@Override
 	public VrCard saveNewVrCard(VrCard vrCard) {
@@ -111,29 +82,7 @@ public class VrCardServiceImpl implements VrCardService{
 		
 	}
 	
-	@Override
-	public ResponseEntity<String> doTransaction(@RequestBody VrCardTransaction vrCardTransaction){
-		
-		try {
-			VrCard vrCard = this.findByCardNumber(vrCardTransaction.getCardNumber());
-			
-			this.checkCardPassword(vrCardTransaction);
-			
-			vrCard.setCardBalance(this.calculateCardBalance(vrCardTransaction));
-			
-			repository.save(vrCard);
-			
-			return ResponseEntity.status(HttpStatus.CREATED).body(trasactionVrOk);
-			
-			//SALDO_INSUFICIENTE|SENHA_INVALIDA|CARTAO_INEXISTENTE (dependendo da regra que impediu a autorização)	
-		}catch(EntityNotFoundException e) {
-			throw new EntityNotFoundException(e.getMessage()) ;
-		}catch(EntityUnprocessableException e) {
-			throw new EntityUnprocessableException(e.getMessage()) ;
-		}
-
-		
-	}
+	
 	
 }
 

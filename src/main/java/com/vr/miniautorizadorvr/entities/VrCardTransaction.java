@@ -1,9 +1,15 @@
 package com.vr.miniautorizadorvr.entities;
 
 public class VrCardTransaction {
+		
+	//@NotEmpty(message = "O campo cardNumber deve ser preenchido")
 	
-	private String cardPassword;
 	private Long cardNumber;
+	
+
+	private String cardPassword;
+	
+
 	private Float  valueTransaction;
 	
 	public String getCardPassword() {

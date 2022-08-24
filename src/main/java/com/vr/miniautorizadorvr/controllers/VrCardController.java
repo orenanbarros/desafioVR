@@ -16,12 +16,16 @@ import com.vr.miniautorizadorvr.entities.VrCard;
 import com.vr.miniautorizadorvr.entities.VrCardTransaction;
 import com.vr.miniautorizadorvr.exception.EntityNotFoundException;
 import com.vr.miniautorizadorvr.services.VrCardService;
+import com.vr.miniautorizadorvr.services.VrCardTransactionService;
 
 @RestController
 public class VrCardController {
 
 	@Autowired
 	private VrCardService vrCardService;
+	
+	@Autowired
+	private VrCardTransactionService vrCardTransactionService;
 
 	//LISTA TODOS OS CARTOES - GET
 	@RequestMapping(value = "/cartoes")
@@ -46,7 +50,7 @@ public class VrCardController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(vrCardService.saveNewVrCard(vrCard));	
 		}catch(EntityNotFoundException e ) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
-		}		
+		}
 	}
 	
 	//RETORNA SALDO DE UM DETERMINADO CARTAO - GET
@@ -59,8 +63,8 @@ public class VrCardController {
 	
 	//REALIZA TRANSACAO DE DEBITO - POST
 	@PostMapping(value = "/transacoes")
-	public ResponseEntity<String> doTransaction(@RequestBody VrCardTransaction vrCardTransaction){		
-		return vrCardService.doTransaction(vrCardTransaction);
+	public ResponseEntity<String> doTransaction( @RequestBody VrCardTransaction vrCardTransaction){		
+		return vrCardTransactionService.doTransaction(vrCardTransaction);
 	}
 	
 	

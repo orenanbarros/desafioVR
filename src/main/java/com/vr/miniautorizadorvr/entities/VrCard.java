@@ -14,8 +14,11 @@ public class VrCard {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	private String cardPassword;
+	
 	private Long cardNumber;
+	
+	private String cardPassword;
+	
 	private Float  cardBalance;
 	
 
