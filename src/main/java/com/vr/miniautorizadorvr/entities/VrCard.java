@@ -21,7 +21,6 @@ public class VrCard {
 	
 	private Float  cardBalance;
 	
-
 	
 	public String getCardPassword() {
 		return cardPassword;
