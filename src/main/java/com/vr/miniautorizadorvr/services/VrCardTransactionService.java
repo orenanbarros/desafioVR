@@ -9,9 +9,8 @@ import com.vr.miniautorizadorvr.entities.VrCardTransaction;
 
 public interface VrCardTransactionService {
 						
-	
 	@Transactional  
-	public ResponseEntity<String> doTransaction(@RequestBody VrCardTransaction vrCardTransaction);
+	public ResponseEntity<String> realizarTransacao(@RequestBody VrCardTransaction vrCardTransaction);
 
 
 }

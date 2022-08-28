@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="tb_vrcard")
+@Table(name="tb_vrCard")
 
 public class VrCard {
 
@@ -15,29 +15,29 @@ public class VrCard {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	private Long cardNumber;
+	private Long numeroCartao;
 	
-	private String cardPassword;
+	private String senhaCartao;
 	
-	private Float  cardBalance;
+	private Float saldoCartao;
 	
 	
-	public String getCardPassword() {
-		return cardPassword;
+	public String getSenhaCartao() {
+		return senhaCartao;
 	}
-	public void setCardPassword(String cardPassword) {
-		this.cardPassword = cardPassword;
+	public void setSenhaCartao(String cardPassword) {
+		this.senhaCartao = cardPassword;
 	}
-	public Long getCardNumber() {
-		return cardNumber;
+	public Long getNumeroCartao() {
+		return numeroCartao;
 	}
-	public void setCardNumber(Long cardNumber) {
-		this.cardNumber = cardNumber;
+	public void setNumeroCartao(Long cardNumber) {
+		this.numeroCartao = cardNumber;
 	}
-	public Float getCardBalance() {
-		return cardBalance;
+	public Float getSaldoCartao() {
+		return saldoCartao;
 	}
-	public void setCardBalance(Float cardBalance) {
-		this.cardBalance = cardBalance;
+	public void setSaldoCartao(Float cardBalance) {
+		this.saldoCartao = cardBalance;
 	}
 }

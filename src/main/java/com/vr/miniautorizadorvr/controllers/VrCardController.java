@@ -33,9 +33,9 @@ public class VrCardController {
 		return vrCardService.findAll();
 	}
 	
-	public ResponseEntity<VrCard> getVrCard(Long cardNumber) {
+	public ResponseEntity<VrCard> getVrCard(Long numeroCartao) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(vrCardService.findByCardNumber(cardNumber));	
+			return ResponseEntity.status(HttpStatus.OK).body(vrCardService.findByNumeroCartao(numeroCartao));	
 		}catch(EntityNotFoundException e ) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
@@ -47,7 +47,7 @@ public class VrCardController {
 		
 		//Verifica se o numero informado do cartao nao existe na base de dados e se nao existir salva o cartao informado e retorna 201
 		try {
-			return ResponseEntity.status(HttpStatus.CREATED).body(vrCardService.saveNewVrCard(vrCard));	
+			return ResponseEntity.status(HttpStatus.CREATED).body(vrCardService.salvarNovoCartao(vrCard));	
 		}catch(EntityNotFoundException e ) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 		}
@@ -57,14 +57,14 @@ public class VrCardController {
 	@RequestMapping(value = "/cartoes/{numeroCartao}")
 	public ResponseEntity<Float> getCardBalance(@PathVariable Long numeroCartao){
 		
-		return ResponseEntity.status(HttpStatus.OK).body(vrCardService.getCardBalanceByCardNumber(numeroCartao).getBody());
+		return ResponseEntity.status(HttpStatus.OK).body(vrCardService.getSaldoByNumeroCartao(numeroCartao).getBody());
 	
 	}
 	
 	//REALIZA TRANSACAO DE DEBITO - POST
 	@PostMapping(value = "/transacoes")
 	public ResponseEntity<String> doTransaction( @RequestBody VrCardTransaction vrCardTransaction){		
-		return vrCardTransactionService.doTransaction(vrCardTransaction);
+		return vrCardTransactionService.realizarTransacao(vrCardTransaction);
 	}
 	
 	

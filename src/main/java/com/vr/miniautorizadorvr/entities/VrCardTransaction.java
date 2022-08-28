@@ -2,33 +2,31 @@ package com.vr.miniautorizadorvr.entities;
 
 public class VrCardTransaction {
 		
-	//@NotEmpty(message = "O campo cardNumber deve ser preenchido")
+	//@NotEmpty(message = "O campo numeroCartao deve ser preenchido")
 	
-	private Long cardNumber;
+	private Long numeroCartao;
 	
-
-	private String cardPassword;
+	private String senhaCartao;
 	
-
-	private Float  valueTransaction;
+	private Float valor;
 	
-	public String getCardPassword() {
-		return cardPassword;
+	public String getsenhaCartao() {
+		return senhaCartao;
 	}
-	public void setCardPassword(String cardPassword) {
-		this.cardPassword = cardPassword;
+	public void setsenhaCartao(String senhaCartao) {
+		this.senhaCartao = senhaCartao;
 	}
-	public Long getCardNumber() {
-		return cardNumber;
+	public Long getnumeroCartao() {
+		return numeroCartao;
 	}
-	public void setCardNumber(Long cardNumber) {
-		this.cardNumber = cardNumber;
+	public void setnumeroCartao(Long numeroCartao) {
+		this.numeroCartao = numeroCartao;
 	}
-	public Float getValueTransaction() {
-		return valueTransaction;
+	public Float getvalor() {
+		return valor;
 	}
-	public void setValueTransaction(Float valueTransaction) {
-		this.valueTransaction = valueTransaction;
+	public void setvalor(Float valor) {
+		this.valor = valor;
 	}
 	
 }

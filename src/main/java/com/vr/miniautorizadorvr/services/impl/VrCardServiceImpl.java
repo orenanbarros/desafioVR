@@ -45,36 +45,36 @@ public class VrCardServiceImpl implements VrCardService{
 	}
 			
 	@Override
-	public VrCard findByCardNumber(Long cardNumber) {
+	public VrCard findByNumeroCartao(Long numeroCartao) {
 		
 		try {			
-			return Optional.of(repository.findByCardNumber(cardNumber)).orElseThrow(()-> new EntityNotFoundException());
+			return Optional.of(repository.findByNumeroCartao(numeroCartao)).orElseThrow(()-> new EntityNotFoundException());
 		}catch(Exception e) {
-			throw new EntityNotFoundException(inexistentCard + ":"+ cardNumber) ;
+			throw new EntityNotFoundException(inexistentCard + ":"+ numeroCartao) ;
 		}
 	}
 	
 	
 	@Override
-	public ResponseEntity<Float> getCardBalanceByCardNumber(Long cardNumber) {
+	public ResponseEntity<Float> getSaldoByNumeroCartao(Long numeroCartao) {
 		
 		try {
-			VrCard vrCard = Optional.of(repository.findByCardNumber(cardNumber)).orElseThrow(()-> new EntityNotFoundException() );
-			return ResponseEntity.status(HttpStatus.OK).body(vrCard.getCardBalance());
+			VrCard vrCard = Optional.of(repository.findByNumeroCartao(numeroCartao)).orElseThrow(()-> new EntityNotFoundException() );
+			return ResponseEntity.status(HttpStatus.OK).body(vrCard.getSaldoCartao());
 		}catch(Exception e) {
-			throw new EntityNotFoundException(inexistentCard + cardNumber) ;
+			throw new EntityNotFoundException(inexistentCard + numeroCartao) ;
 		}
 	}
 	
 	
 	@Override
-	public VrCard saveNewVrCard(VrCard vrCard) {
+	public VrCard salvarNovoCartao(VrCard vrCard) {
 		
 		//Verifica se o numero do cartao informado nao existe
-		VrCard vrCardAux = repository.findByCardNumber(vrCard.getCardNumber());
+		VrCard vrCardAux = repository.findByNumeroCartao(vrCard.getNumeroCartao());
 		if(vrCardAux == null) {
 			//Se o numero do cartao informado nao existe inclui o saldo inicial e salva o novo cartao 
-			vrCard.setCardBalance(initialCardBalance);
+			vrCard.setSaldoCartao(initialCardBalance);
 			return repository.save(vrCard);
 		}else {
 			throw new EntityUnprocessableException(existentCard) ;

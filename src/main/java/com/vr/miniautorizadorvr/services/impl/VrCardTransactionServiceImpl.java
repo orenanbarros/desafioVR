@@ -49,7 +49,7 @@ public class VrCardTransactionServiceImpl implements VrCardTransactionService{
 	private void checkCardPassword(VrCardTransaction vrCardTransaction) {
 		try {
 			Optional.of(
-					repository.findByCardNumberAndCardPassword(vrCardTransaction.getCardNumber(), vrCardTransaction.getCardPassword())).orElseThrow(()-> new EntityUnprocessableException(invalidPassword) );
+					repository.findByNumeroCartaoAndSenhaCartao(vrCardTransaction.getnumeroCartao(), vrCardTransaction.getsenhaCartao())).orElseThrow(()-> new EntityUnprocessableException(invalidPassword) );
 			 
 		}catch(Exception e) {
 			throw new EntityUnprocessableException(invalidPassword) ; 
@@ -61,10 +61,10 @@ public class VrCardTransactionServiceImpl implements VrCardTransactionService{
 		try {
 			
 			VrCard vrCard = Optional.of(
-					repository.findByCardNumberAndCardBalanceGreaterThanEqual(vrCardTransaction.getCardNumber(),vrCardTransaction.getValueTransaction())).orElseThrow(()-> new EntityUnprocessableException(insufficientBalance) );
+					repository.findByNumeroCartaoAndSaldoCartaoGreaterThanEqual(vrCardTransaction.getnumeroCartao(),vrCardTransaction.getvalor())).orElseThrow(()-> new EntityUnprocessableException(insufficientBalance) );
 			 
 			 
-			 return (vrCard.getCardBalance()-vrCardTransaction.getValueTransaction());
+			 return (vrCard.getSaldoCartao()-vrCardTransaction.getvalor());
 					 
 		}catch(Exception e) {
 			throw new EntityUnprocessableException(insufficientBalance) ;
@@ -73,14 +73,14 @@ public class VrCardTransactionServiceImpl implements VrCardTransactionService{
 	}
 	
 	@Override
-	public ResponseEntity<String> doTransaction(@RequestBody VrCardTransaction vrCardTransaction){
+	public ResponseEntity<String> realizarTransacao(@RequestBody VrCardTransaction vrCardTransaction){
 		
 		try {
-			VrCard vrCard = vrCardService.findByCardNumber(vrCardTransaction.getCardNumber());
+			VrCard vrCard = vrCardService.findByNumeroCartao(vrCardTransaction.getnumeroCartao());
 			
 			this.checkCardPassword(vrCardTransaction);
 			
-			vrCard.setCardBalance(this.calculateCardBalance(vrCardTransaction));
+			vrCard.setSaldoCartao(this.calculateCardBalance(vrCardTransaction));
 			
 			repository.save(vrCard);
 			

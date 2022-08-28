@@ -11,11 +11,11 @@ public interface VrCardService {
 
 	public List<VrCard> findAll();
 			
-	public VrCard findByCardNumber(Long cardNumber);
+	public VrCard findByNumeroCartao(Long numeroCartao);
 			
-	public ResponseEntity<Float> getCardBalanceByCardNumber(Long cardNumber);
+	public ResponseEntity<Float> getSaldoByNumeroCartao(Long numeroCartao);
 	
-	public VrCard saveNewVrCard(VrCard vrCard);
+	public VrCard salvarNovoCartao(VrCard vrCard);
 	
 	
 

@@ -8,14 +8,13 @@ import com.vr.miniautorizadorvr.entities.VrCard;
 @Repository
 public interface VrCardRepository extends JpaRepository<VrCard,Long>{
 	
-	Boolean existsByCardNumber(Long cardNumber);
+	//Boolean existsByCardNumber(Long numeroCartao);
 	
-	VrCard findByCardNumber(Long cardNumber);
+	VrCard findByNumeroCartao(Long numeroCartao);
+		
+	VrCard findByNumeroCartaoAndSenhaCartao(Long numeroCartao, String senhaCartao );
 	
-	VrCard findByCardNumberNot(Long cardNumber);
+	VrCard findByNumeroCartaoAndSaldoCartaoGreaterThanEqual(Long numeroCartao, Float saldoCartao );
 	
-	VrCard findByCardNumberAndCardPassword(Long cardNumber, String cardPassword );
-	
-	VrCard findByCardNumberAndCardBalanceGreaterThanEqual(Long cardNumber, Float cardBalance );
 
 }
