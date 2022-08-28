@@ -1,11 +1,9 @@
 package com.vr.miniautorizadorvr.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.http.ResponseEntity;
 
 import com.vr.miniautorizadorvr.entities.VrCard;
 import com.vr.miniautorizadorvr.entities.VrCardTransaction;
@@ -14,14 +12,12 @@ import com.vr.miniautorizadorvr.services.impl.VrCardTransactionServiceImpl;
 
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
-@WebAppConfiguration
-
 public class VrCardServiceImplTest {
 	
 	@Autowired
 	private VrCardServiceImpl vCardServiceImpl;
 	
+	@Autowired
 	private VrCardTransactionServiceImpl vrCardTransactionServiceImpl;
 	
 	//TESTE DE RETORNO DE TODOS OS CARTOES
@@ -31,6 +27,7 @@ public class VrCardServiceImplTest {
 	}
 	
 	//TESTE DO SALVAMENTO DE NOVO CARTAO
+	
 	@Test
 	public void saveNewVrCard() {
 		VrCard vrCard = new VrCard();
@@ -45,8 +42,8 @@ public class VrCardServiceImplTest {
 	public void getCardBalanceByCardNumber() {
 		
 		Long numeroCartao = Long.parseLong("123456789");
-		vCardServiceImpl.getSaldoByNumeroCartao(numeroCartao);
-		
+		ResponseEntity<Float> saldo = vCardServiceImpl.getSaldoByNumeroCartao(numeroCartao);
+		System.out.println("CARTAO NÚMERO: " + numeroCartao + " - SALDO: " + saldo.getBody());
 	}
 	
 	
@@ -56,7 +53,7 @@ public class VrCardServiceImplTest {
 		VrCardTransaction vrCardTransaction = new VrCardTransaction();
 		
 		vrCardTransaction.setnumeroCartao(Long.parseLong("123456789"));
-		vrCardTransaction.setsenhaCartao("1234");
+		vrCardTransaction.setsenhaCartao("Senhacartao123");
 		vrCardTransaction.setvalor(Float.valueOf("10.00"));
 	
 		vrCardTransactionServiceImpl.realizarTransacao(vrCardTransaction);
