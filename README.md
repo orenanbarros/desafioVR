@@ -1,5 +1,5 @@
 
-<h1 align="left">DESAFIO_VR DESAFIO_VR</h1>
+<h1 align="left">DESAFIO_VR</h1>
 <h3 align="left">Mini autorizador</h3>
 
 
