@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vr.miniautorizadorvr.entities.VrCard;
 import com.vr.miniautorizadorvr.exception.EntityNotFoundException;
@@ -21,23 +22,9 @@ public class VrCardServiceImpl implements VrCardService{
 	@Autowired 
 	private VrCardRepository repository;
 	
-	@Value("${msg.insufficient_balance}")
-    private String insufficientBalance;
-	
-	@Value("${msg.invalid_password}")
-    private String invalidPassword;
-	
-	@Value("${msg.inexistent_card}")
-    private String inexistentCard;
-	
-	@Value("${msg.trasactionVr_ok}")
-    private String trasactionVrOk;
-	
-	@Value("${msg.existent_card}")
-    private String existentCard;
-	
-	@Value("${initialCard_Balance}")
-    private Float initialCardBalance;
+	@Autowired
+    private MessageSource messageSource;
+		
 	
 	@Override
 	public List<VrCard> findAll(){
@@ -45,39 +32,42 @@ public class VrCardServiceImpl implements VrCardService{
 	}
 			
 	@Override
-	public VrCard findByNumeroCartao(Long numeroCartao) {
+	public VrCard findByNumeroCartao(String numeroCartao) {
 		
 		try {			
 			return Optional.of(repository.findByNumeroCartao(numeroCartao)).orElseThrow(()-> new EntityNotFoundException());
 		}catch(Exception e) {
-			throw new EntityNotFoundException(inexistentCard + ":"+ numeroCartao) ;
+			throw new EntityNotFoundException(messageSource.getMessage("msg.validation.inexistent_card",null,null) + ": " + numeroCartao) ;
 		}
 	}
 	
 	
 	@Override
-	public ResponseEntity<Float> getSaldoByNumeroCartao(Long numeroCartao) {
+	public ResponseEntity<Float> getSaldoByNumeroCartao(String numeroCartao) {
 		
 		try {
 			VrCard vrCard = Optional.of(repository.findByNumeroCartao(numeroCartao)).orElseThrow(()-> new EntityNotFoundException() );
 			return ResponseEntity.status(HttpStatus.OK).body(vrCard.getSaldoCartao());
 		}catch(Exception e) {
-			throw new EntityNotFoundException(inexistentCard + numeroCartao) ;
+			
+			throw new EntityNotFoundException(messageSource.getMessage("msg.validation.inexistent_card",null,null) + ": " +numeroCartao) ;
 		}
 	}
 	
 	
 	@Override
+	@Transactional
 	public VrCard salvarNovoCartao(VrCard vrCard) {
 		
 		//Verifica se o numero do cartao informado nao existe
-		VrCard vrCardAux = repository.findByNumeroCartao(vrCard.getNumeroCartao());
-		if(vrCardAux == null) {
-			//Se o numero do cartao informado nao existe inclui o saldo inicial e salva o novo cartao 
-			vrCard.setSaldoCartao(initialCardBalance);
-			return repository.save(vrCard);
+		
+		if(repository.findByNumeroCartao(vrCard.getNumeroCartao()) == null) {
+			VrCard vrCardAux = new VrCard();
+			vrCardAux.setNumeroCartao(vrCard.getNumeroCartao());
+			vrCardAux.setSenhaCartao(vrCard.getSenhaCartao());
+			return repository.save(vrCardAux);
 		}else {
-			throw new EntityUnprocessableException(existentCard) ;
+			throw new EntityUnprocessableException(messageSource.getMessage("msg.validation.existent_card",null,null)) ;
 		}
 		
 	}

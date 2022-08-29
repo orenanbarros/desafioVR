@@ -3,6 +3,8 @@ package com.vr.miniautorizadorvr.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,18 +34,10 @@ public class VrCardController {
 	public List<VrCard> findAll(){
 		return vrCardService.findAll();
 	}
-	
-	public ResponseEntity<VrCard> getVrCard(Long numeroCartao) {
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(vrCardService.findByNumeroCartao(numeroCartao));	
-		}catch(EntityNotFoundException e ) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
-	}
-		
+			
 	//CRIA NOVO CARTAO - POST
 	@PostMapping(value = "/cartoes")
-	public ResponseEntity<VrCard> insert(@RequestBody VrCard vrCard){
+	public ResponseEntity<VrCard> insert(@Valid @RequestBody VrCard vrCard){
 		
 		//Verifica se o numero informado do cartao nao existe na base de dados e se nao existir salva o cartao informado e retorna 201
 		try {
@@ -55,7 +49,7 @@ public class VrCardController {
 	
 	//RETORNA SALDO DE UM DETERMINADO CARTAO - GET
 	@RequestMapping(value = "/cartoes/{numeroCartao}")
-	public ResponseEntity<Float> getCardBalance(@PathVariable Long numeroCartao){
+	public ResponseEntity<Float> getCardBalance(@PathVariable String numeroCartao){
 		
 		return ResponseEntity.status(HttpStatus.OK).body(vrCardService.getSaldoByNumeroCartao(numeroCartao).getBody());
 	
@@ -63,7 +57,7 @@ public class VrCardController {
 	
 	//REALIZA TRANSACAO DE DEBITO - POST
 	@PostMapping(value = "/transacoes")
-	public ResponseEntity<String> doTransaction( @RequestBody VrCardTransaction vrCardTransaction){		
+	public ResponseEntity<String> doTransaction(@Valid @RequestBody VrCardTransaction vrCardTransaction){		
 		return vrCardTransactionService.realizarTransacao(vrCardTransaction);
 	}
 	

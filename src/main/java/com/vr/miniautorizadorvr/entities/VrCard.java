@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="tb_vrCard")
@@ -15,29 +17,32 @@ public class VrCard {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	private Long numeroCartao;
+	@Size(max=16,min=16,message="{msg.validation.numeroCartaoRequerido}")
+	private String numeroCartao;
 	
+	@NotEmpty (message = "{msg.validation.senhaCartaoRequerido}")
 	private String senhaCartao;
 	
-	private Float saldoCartao;
+	private float saldoCartao = com.vr.miniautorizadorvr.config.MiniautorizadorConfig.SALDO_INICIAL_CARTAO;
 	
 	
 	public String getSenhaCartao() {
 		return senhaCartao;
 	}
-	public void setSenhaCartao(String cardPassword) {
-		this.senhaCartao = cardPassword;
+	public void setSenhaCartao(String senhaCartao) {
+		this.senhaCartao = senhaCartao;
 	}
-	public Long getNumeroCartao() {
+	public String getNumeroCartao() {
 		return numeroCartao;
 	}
-	public void setNumeroCartao(Long cardNumber) {
-		this.numeroCartao = cardNumber;
+	public void setNumeroCartao(String numeroCartao) {
+		this.numeroCartao = numeroCartao;
 	}
 	public Float getSaldoCartao() {
 		return saldoCartao;
 	}
-	public void setSaldoCartao(Float cardBalance) {
-		this.saldoCartao = cardBalance;
+	
+	public void setSaldoCartao(float saldoCartao) {
+		this.saldoCartao = saldoCartao;
 	}
 }

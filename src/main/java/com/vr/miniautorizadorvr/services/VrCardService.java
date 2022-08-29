@@ -11,9 +11,9 @@ public interface VrCardService {
 
 	public List<VrCard> findAll();
 			
-	public VrCard findByNumeroCartao(Long numeroCartao);
+	public VrCard findByNumeroCartao(String numeroCartao);
 			
-	public ResponseEntity<Float> getSaldoByNumeroCartao(Long numeroCartao);
+	public ResponseEntity<Float> getSaldoByNumeroCartao(String numeroCartao);
 	
 	public VrCard salvarNovoCartao(VrCard vrCard);
 	
