@@ -41,7 +41,12 @@ public class VrCardServiceImplTest {
 	@Test
 	public void getCardBalanceByCardNumber() {
 		
-		String numeroCartao = "1234567890123456";
+		VrCard vrCard = new VrCard();
+		vrCard.setNumeroCartao("1234567890123457"); 
+		vrCard.setSenhaCartao("Senhacartao123");
+		vCardServiceImpl.salvarNovoCartao(vrCard);
+		
+		String numeroCartao = "1234567890123457";
 		ResponseEntity<Float> saldo = vCardServiceImpl.getSaldoByNumeroCartao(numeroCartao);
 		System.out.println("CARTAO NÚMERO: " + numeroCartao + " - SALDO: " + saldo.getBody());
 	}
@@ -52,7 +57,12 @@ public class VrCardServiceImplTest {
 	public void doTransaction() {
 		VrCardTransaction vrCardTransaction = new VrCardTransaction();
 		
-		vrCardTransaction.setnumeroCartao("1234567890123456");
+		VrCard vrCard = new VrCard();
+		vrCard.setNumeroCartao("1234567890123458"); 
+		vrCard.setSenhaCartao("Senhacartao123");
+		vCardServiceImpl.salvarNovoCartao(vrCard);
+		
+		vrCardTransaction.setnumeroCartao("1234567890123458");
 		vrCardTransaction.setsenhaCartao("Senhacartao123");
 		vrCardTransaction.setvalor(Float.valueOf("10.00"));
 	
